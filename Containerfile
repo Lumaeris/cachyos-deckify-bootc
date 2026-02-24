@@ -85,9 +85,9 @@ RUN mkdir -p /etc/sudoers.d && \
     tee "/etc/sudoers.d/wheel"
 
 # enable some necessary services
-RUN systemctl enable NetworkManager.service
-RUN systemctl enable brew-setup.service
-RUN systemctl --global enable cachyos-gamescope-autologin.service
+RUN systemctl enable NetworkManager.service && \
+    systemctl enable brew-setup.service &&\
+    systemctl --global enable cachyos-gamescope-autologin.service
 
 # https://github.com/bootc-dev/bootc/issues/1801
 RUN printf "systemdsystemconfdir=/etc/systemd/system\nsystemdsystemunitdir=/usr/lib/systemd/system\n" | tee /usr/lib/dracut/dracut.conf.d/30-bootcrew-fix-bootc-module.conf && \
@@ -96,8 +96,8 @@ RUN printf "systemdsystemconfdir=/etc/systemd/system\nsystemdsystemunitdir=/usr/
 
 # Necessary for general behavior expected by image-based systems
 RUN sed -i 's|^HOME=.*|HOME=/var/home|' "/etc/default/useradd" && \
-    rm -rf /mnt /opt /boot /home /root /usr/local /srv /var /usr/lib/sysimage/log /usr/lib/sysimage/cache/pacman/pkg && \
-    mkdir -p /sysroot /boot /usr/lib/ostree /var && \
+    rm -rf /mnt /opt /boot /home /root /usr/local /srv /var /usr/lib/sysimage/log /usr/lib/sysimage/cache/pacman/pkg /run /tmp && \
+    mkdir -p /sysroot /boot /usr/lib/ostree /var /run /tmp && \
     ln -s sysroot/ostree /ostree && ln -s var/roothome /root && ln -s var/srv /srv && ln -s var/opt /opt && ln -s var/mnt /mnt && ln -s var/home /home && \
     echo "$(for dir in opt home srv mnt usrlocal ; do echo "d /var/$dir 0755 root root -" ; done)" | tee -a "/usr/lib/tmpfiles.d/bootc-base-dirs.conf" && \
     printf "d /var/roothome 0700 root root -\nd /run/media 0755 root root -" | tee -a "/usr/lib/tmpfiles.d/bootc-base-dirs.conf" && \
