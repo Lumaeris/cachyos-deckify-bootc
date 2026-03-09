@@ -214,11 +214,8 @@ RUN --mount=type=tmpfs,dst=/run \
 # kde plasma (for handhelds!) and some necessary packages of cachyos handheld edition
 # it pulls big steam bootstrap automatically so I don't need to worry about it at all
 RUN --mount=type=tmpfs,dst=/run \
-    pacman -Sy --needed --noconfirm cachyos-nord-kde-theme-git \
-        cachyos-iridescent-kde \
-        cachyos-emerald-kde-theme-git \
-        cachyos-themes-sddm \
-        cachyos-handheld \
+    pacman -Sy --needed --noconfirm cachyos-handheld \
+        plasma-login-manager \
         v4l-utils \
         plasma-keyboard \
         ark \
@@ -251,8 +248,6 @@ RUN --mount=type=tmpfs,dst=/run \
         plasma-thunderbolt \
         powerdevil \
         spectacle \
-        sddm \
-        sddm-kcm \
         qt6-wayland \ 
         xsettingsd \
         xdg-desktop-portal \
